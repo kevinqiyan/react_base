@@ -2,6 +2,8 @@ import React from 'react';
 import Greeting from './common/greeting'
 import LoginButton from './common/loginButton'
 import LogoutButton from './common/logoutButton'
+import NumberTest from './common/numbers'
+import FromTest from './common/form'
 class Second extends React.Component {
     constructor(props) {
         super(props);
@@ -21,7 +23,7 @@ class Second extends React.Component {
     }
     tick() {
         this.setState({
-            date:new Date()
+            date: new Date()
         })
     }
     handleClick = () => {
@@ -29,10 +31,10 @@ class Second extends React.Component {
         // console.log('this is', this)
     }
     loginBtn = () => {
-        this.setState({isLoggedIn:false})
+        this.setState({ isLoggedIn: false })
     }
     logoutBtn = () => {
-        this.setState({isLoggedIn:true})
+        this.setState({ isLoggedIn: true })
     }
 
     render() {
@@ -53,10 +55,12 @@ class Second extends React.Component {
                 <h1 onClick={this.handleClick}>Hello,{this.props.name}</h1>
                 <h2>It is {new Date().toLocaleTimeString()}</h2>
                 {/* 第一种组件切换显示方法 把两个button封装到一个组件进行调用 */}
-                <Greeting isLoggedIn={this.state.isLoggedIn} onClick={this.state.isLoggedIn?this.loginBtn:this.logoutBtn}></Greeting>
+                <Greeting isLoggedIn={this.state.isLoggedIn} onClick={this.state.isLoggedIn ? this.loginBtn : this.logoutBtn}></Greeting>
                 {button}
+                <NumberTest></NumberTest>
+                <FromTest></FromTest>
             </div>
-            
+
         )
     }
 }
@@ -96,6 +100,66 @@ export default Second
         上述两种方式是等价的，分别通过 箭头函数 和 Function.prototype.bind 来实现
         在这两种情况下，React的事件对象 e 会被作为第二个参数传递。如果通过箭头函数的方式，事件对象必须显示的进行传递，而通过 bing 的方式，事件对象以及更多的参数将会被隐士的进行传递
 4. 条件渲染
+        && 与运算符
+        ? : 三目运算符
+        阻止组件渲染
+            在组件的 render 方法中返回 null 并不会影响组件的生命周期
+5. 列表 & Key
+    万不得已可以使用元素索引 index 作为 key
+        若列表的顺序可能会发生变化，不建议索引使用作为 key 值，因为这样做会导致性能变差，还可能引起组件状态的问题。React 默认使用索引作为列表项目的 key 值
+        key 只是在兄弟节点之间必须为何一
+        key 会传递信息给 React，但不会传递给组件。若组件中需要使用 key 属性的值，请使用其他属性名显式传递这个值
+            ps：组件不能读取 props.key
+    用 key 提取组件
+            function ListItem(props) {
+                // 正确！这里不需要指定 key：
+                return <li>{props.value}</li>;
+            }
 
+            function NumberList(props) {
+                const numbers = props.numbers;
+                const listItems = numbers.map((number) =>
+                    // 正确！key 应该在数组的上下文中被指定
+                    <ListItem key={number.toString()} value={number} />
+            );
+            return (
+                <ul>{listItems} </ul>
+                );
+            }
 
+            const numbers = [1, 2, 3, 4, 5];
+            ReactDOM.render(
+                <NumberList numbers={numbers} />,
+                document.getElementById('root')
+            );
+6. 表单
+    在React里，HTML表单元素的工作方式和其他 DOM 元素有些不同，表单元素通常会保持一些内部的 state。
+    受控组件
+        在React中，可变状态（mutable state）通常保存在组件的 state 属性中，并且只能通过使用 setState()来更新
+        渲染表单的 React 组件还控制着用户输入过程中表单发生的操作，被 react 以这种方式控制取值的表单输入元素就叫做“受控组件”
+7. 状态提升
+    两个子组件的数据同步
+        将子组件共同的数据提取到父组件中（props 是只读的）
+            因为props是只读的，所以在React中可以通过使用“受控组件”来解决
+            在父组件中定义子组件中需要触发的方法，当其中一个输入框发生变化则另一个输入框也跟随变化（通过重新设置值）
+8. 组合 VS 继承 （重点）
+    https://react.docschina.org/docs/composition-vs-inheritance.html
+    在Facebook中没有发现需要使用继承来构建组件层次的情况（原文）
+
+FAQ(整理)
+    1. 调用 setState 是异步，若是需要确保每次调用都是使用最新的 state，需要给 setState 传递一个函数而不是一个对象
+            incrementCount(){
+                this.setState((state)=>{
+                    return {count:state.count}
+                })
+            }
+            handleSomething(){
+                // 假设 this.state.count 从 0 开始
+                this.incrementCount()
+                this.incrementCount()
+                this.incrementCount()
+                // 如果在这里读取 this.state.count 它还是为 0
+                // 但是，当 React 重新渲染该组件时，它会变为 3
+            }
+    2. 目前在事件处理函数内部的 setState 是异步的
 */
