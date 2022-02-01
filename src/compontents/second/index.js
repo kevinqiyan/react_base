@@ -145,6 +145,46 @@ export default Second
 8. 组合 VS 继承 （重点）
     https://react.docschina.org/docs/composition-vs-inheritance.html
     在Facebook中没有发现需要使用继承来构建组件层次的情况（原文）
+9. Context 
+    主要应用场景在于很多不同层级的组件需要访问同样一些的数据。请谨慎使用，因为这会使得组件的复用性变差
+    API: 
+        React.createContext
+            创建一个Context对象。当React渲染一个订阅了这个Context对象的组件，这个组件会从组件树中离自身那个匹配的 Provider 中读取到当前的 context 值
+            只有当组件所处的树中没有匹配到Provider时，其defaultValue参数才会生效。
+                注意：将undefined传递给 Provide 的 value时，消费组件的 defaultValue不会生效
+        每一个 Context 对象都会返回一个 Provider React 组件，它允许消费组件订阅context的变化
+10. 错误边界
+      部分UI的js错误不应该导致整个应用崩溃，为了解决这个问题，React 16引入了一个新的概念 --- 错误边界
+      错误边界时一种 React 组件，这种组件可以捕获并打印发生在其子组件树任何位置的 JavaScript 错误，并且它会渲染出备用 UI，而不是渲染那些崩溃了的子组件树。
+      注意：
+            错误边界仅可以捕获其子组件的错误，无法捕获其自身的错误。
+11. Fragments
+        React中的一个常见模式时一个组件返回多个元素。Fragments允许将子列表分组，无需向 DOM 添加额外节点
+        用法：
+                正确：可以输出 <td>Hello</td> <td>World</td>
+                class Columns extends React.Component {
+                    render() {
+                        return (
+                        <React.Fragment>
+                            <td>Hello</td>
+                            <td>World</td>
+                        </React.Fragment>
+                        );
+                    }
+                }
+                错误：如果在组件中的 render() 中使用父div，则生成的 HTML 将无效
+                class Columns extends React.Component {
+                    render() {
+                        return (
+                        <div>
+                            <td>Hello</td>
+                            <td>World</td>
+                        </div>
+                        );
+                    }
+                }
+12. 高阶组件
+        高阶组件时参数为组件，返回值为新组件的函数。组件时将props转换为 UI，而高阶组件是将组件转换为另一个组件
 
 FAQ(整理)
     1. 调用 setState 是异步，若是需要确保每次调用都是使用最新的 state，需要给 setState 传递一个函数而不是一个对象
