@@ -185,6 +185,32 @@ export default Second
                 }
 12. 高阶组件
         高阶组件时参数为组件，返回值为新组件的函数。组件时将props转换为 UI，而高阶组件是将组件转换为另一个组件
+13. 语法糖
+        指计算机语言中添加的某种语法，这种语法对语言的功能并没有影响，但是更方便程序员使用。通常来说使用语法糖能够增加程序的可读性，从而减少程序代码出错的机会。
+        JSX 仅仅只是 React.createElement(component, props, ...children) 函数的语法糖。
+14. JSX
+        用户定义的组件必须以大写字母开头，如果需要一个以小写字母开头的组件，则在JSX中使用它之前，必须将它赋值给一个大写字母开头的变量
+        Props 默认值是 true；当 props.messages 是空数组时，0 仍然会被渲染，如果需要渲染 false、true、null、undefined等值时，需要先将它们转换为字符串
+15. Diffing 算法
+        比对不同类型的元素
+            当根节点为不同类型的而元素时，React会拆卸原有的树并建立起新的树。
+            当拆卸一个树时，对应DOM节点也会被销毁。组件实例将执行 componentWillUnmount()方法。当建立一颗新的树时，对应的 DOM 节点会被创建以及插入到 DOM 中。组件实例将执行 componentWillMount 方法。紧接着 componentDidMount() 方法。所有跟之前的树所关联的 state 也会被销毁。
+        比对同一类型的元素
+            当对比两个相同类型的 React 元素时，React 会保留 DOM 节点，仅对比及更新有改变的属性
+            通过比对这两个元素，React 知道只需要修改 DOM 元素上的 className 属性。
+            当更新 style 属性时，React 仅更新有所更变的属性
+        比对同一类型的组件元素
+            当一个组件更新时，组件实例保持不变，这样 state 在跨越不同的渲染时保持一致。React 将更新该组件实例的 props 以跟最新的元素保持一致，并且调用该实例的 componentWillReceiveProps() 和 componentWillUpdate() 方法。
+            下一步，调用 render() 方法，diff 算法将在之前的结果以及新的结果中进行递归。
+        对子节点进行递归
+            在默认条件下，当递归 DOM 节点的子元素时，React 会同时便利两个子元素的李彪；当产生差异时，生成一个 mutation。
+            在子元素列表末尾新增元素时，更变开销比较小
+16. React API
+        https://react.docschina.org/docs/react-component.html
+17. Hook
+        简介
+            Hook 不能在 class 组件中使用，Hook 是一些可以让你在函数组件里“钩入” React state 及生命周期等特性的函数。
+
 
 FAQ(整理)
     1. 调用 setState 是异步，若是需要确保每次调用都是使用最新的 state，需要给 setState 传递一个函数而不是一个对象
