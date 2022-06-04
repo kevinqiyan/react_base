@@ -228,4 +228,21 @@ FAQ(整理)
                 // 但是，当 React 重新渲染该组件时，它会变为 3
             }
     2. 目前在事件处理函数内部的 setState 是异步的
+        注意：
+            调用 setState 其实时异步的，不要指望在调用 setState 之后，this.state 会立即映射新的值。如果需要基于当前的 state 来计算出新的值，应该传递一个函数，而不是一个对象
+            react 不同步更新 this.state原因：
+                1、在开始渲染之前，React会有意地进行等待，直到所有在组件的时间处理函数内部调用的 setState() 完成之后。这样就可以通过避免不必要的重新渲染来提升细嫩那个
+                2、这样会破坏props 和 state 之间的一致性，造成一些难以 debug 的问题
+                3、这样会让一些我们正在实现的新功能变得无法实现
+    3. React组件 AJAX and APIs
+        AJAX
+            axios、jQuery ajax、window.fetch
+        发送请求
+            建议在 componentDidMount 中发送请求更新组件的state
+            注意：
+                在使用fetch请求时不能使用 catch() 来捕获错误 因为 catch 捕获异常会掩盖组件本身可能产生的 bug
+    4. Virtual DOM（虚拟DOM）
+        是一种编程概念。在这个概念里，UI以一种理想化的，或者说 虚拟的 表现形式被保存于内存中，并通过 ReactDom 等类库使之与真实的DOM 同步。这一过程叫做协调。
+        与其将虚拟DOM视为一种技术，不如说它是一种模式
+
 */
