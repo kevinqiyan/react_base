@@ -209,7 +209,32 @@ export default Second
         https://react.docschina.org/docs/react-component.html
 17. Hook
         简介
-            Hook 不能在 class 组件中使用，Hook 是一些可以让你在函数组件里“钩入” React state 及生命周期等特性的函数。
+            Hook 不能在 class 组件中使用，Hook 是一些可以让你在函数组件里“钩入” React state 及生命周期等特性的函数。\
+        概览
+            Hook 是向下兼容的，可以在不编写class 的情况下使用 state 以及其他的 React 特性
+        state Hook
+            声明变量
+            PS：const [count,setCount] = useState(0)  count 是声明变量，setCount 是对 count 进行赋值时进行调用；
+                这种 JavaScript 语法叫数组解构。它意味着我们同时创建了 count 和 setCount 两个变量，count 的值为 useState 返回的第一个值，setCount 是返回的第二个值
+                当我们使用 useState 定义state变量时候，它返回一个有两个值的数组。第一个值是当前的state，第二个值是更新 state 的函数。使用 [0] [1]来访问有点令人困惑，所以使用数组解构的原因
+        Effect Hook
+            1、可以在组件渲染后实现各种不同的副作用。副作用可能需要清除，所以需要返回一个函数 PS：return xxx（函数）、
+            2、可以通过跳过 Effect 进行性能优化。PS：
+                useEffect(()=>{
+                    document.title = `It's ${count} times`
+                },[count]) // 仅在 count 更改时更新
+                React 会在渲染时将前一次渲染的数据和后一次渲染的数据进行对比，如果所有的元素都是相等的，React 会跳过这个 effect，这就实现了性能的优化
+            3、如果想执行只运行一次的 effect （仅在组件挂在和卸载时执行），可以传递一个空数组（[]）作为第二个参数。这就告诉 React effect 不依赖于 props 或 state 中的任何值，
+                所以它永远都不需要重复执行。这并不属于特殊情况 -- 它依然遵循依赖数组的工作方式
+        Hook 规则
+            1、react 通过 Hook 调用顺序来知道 state 对应的哪个 useState，Hook 的调用顺序在每次渲染中都是相同的，所以它能够正常工作。只要 Hook 的调用顺序在多次渲染之间保持一致，
+                React就能正确地将内部 state 和对应的 Hook 进行关联
+            2、ESLint 插件
+                eslint-plugin-react-hooks 
+                npm install eslint-plugin-react-hooks --save-dev
+                yarn add eslint-plugin-react-hooks --dev
+        自定义hook
+            自定义 Hook 是一个函数，其名称以 ‘use’ 开头，函数内部可以调用其他的 Hook
 
 
 FAQ(整理)
