@@ -20,8 +20,9 @@ const Home = (props) => {
             <h2>{title}, 测试</h2>
             <button onClick={() => setTitle('test')}>setTitle</button>
             <button onClick={() => setTitle('kevin')}>setTitle2</button>
-
+            <h2>test</h2>
         </div>
+        
     )
 }
 

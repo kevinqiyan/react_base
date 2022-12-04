@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import Second from './compontents/second'
 import Home from './view/home/index'
+import Game from './view/game';
 function App() {
   return (
     <div className="App">
@@ -10,6 +11,7 @@ function App() {
        
       </header>
       <Home></Home>
+      <Game></Game>
     </div>
   );
 }
